@@ -1,14 +1,14 @@
 eureka:
   client:
     service-url:
-      #defaultZone: http://localhost:8761/eureka/
       defaultZone: http://39.107.90.67:8761/eureka/
   instance:
     prefer-ip-address: true
+    #ip-address: 39.108.112.202
     instance-id: ${spring.application.name}:${server.port}
-      healthcheck:
-        # 开启健康检查
-        enabled: true
+    healthcheck:
+      # 开启健康检查
+      enabled: true
 
 
 
