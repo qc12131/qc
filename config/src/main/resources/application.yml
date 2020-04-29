@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/qc12131/qc.git
+          username: qc12131
+          password: qweiop199608
+          search-paths:
+  profiles:
+    active: dev
+server:
+  port: 8000
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
