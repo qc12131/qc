@@ -1,0 +1,17 @@
+log:
+  path: logs
+  service:
+    name: gateway
+
+
+spring:
+  # 配置中心
+  cloud:
+    config:
+      fail-fast: true
+      name: gateway,common
+      profile: ${spring.profiles.active}
+      uri:  http://39.108.112.202:8000
+  profiles:
+    active: dev
+
