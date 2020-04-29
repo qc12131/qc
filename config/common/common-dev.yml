@@ -1,1 +1,28 @@
-test: sdadsad
+eureka:
+  client:
+    service-url:
+      defaultZone: http://39.107.90.67:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    #ip-address: 39.108.112.202
+    instance-id: ${spring.application.name}:${server.port}
+    healthcheck:
+      # 开启健康检查
+      enabled: true
+spring:
+  main:
+    allow-bean-definition-overriding: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          # 获取HttpServletRequest
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 10000
+
+#ribbon的超时时间
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000

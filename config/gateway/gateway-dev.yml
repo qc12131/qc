@@ -1,0 +1,30 @@
+# 配置中心
+spring:
+  cloud:
+    gateway:
+      locator:
+        enabled: true
+      routes:
+        - id: config-service
+          uri: lb://config-service
+          predicates:
+            - Path=/config/**
+          filters:
+            # 限流配置
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@remoteAddrKeyResolver}'
+                # replenishRate-令牌桶每秒填充平均速率
+                # burstCapacity-令牌桶总容量
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+              # 降级配置
+            - name: Hystrix
+              args:
+                name: default
+                fallbackUri: 'forward:/fallback'
+
+
+
+
+
