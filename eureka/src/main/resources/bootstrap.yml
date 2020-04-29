@@ -1,0 +1,6 @@
+log:
+  path: logs
+  service:
+    name: eureka
+
+
