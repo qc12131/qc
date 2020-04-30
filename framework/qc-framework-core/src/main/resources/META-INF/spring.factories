@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.qccloud.core.utils.RedisUtil
+  # com.lz.cloud.lz.framework.core.config.RestTemplateConfig,\
