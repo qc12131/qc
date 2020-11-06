@@ -198,11 +198,6 @@
     <springProfile name="dev">
         <root level="info">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="DEBUG_FILE"/>
-            <appender-ref ref="LOGFILE"/>
-            <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
-            <appender-ref ref="WARN_FILE"/>
         </root>
     </springProfile>
 

@@ -1,9 +1,6 @@
 package com.qccloud.core.utils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
@@ -17,17 +14,184 @@ import java.util.Date;
  */
 public class LocalDateTimeUtils {
 
+    public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd ");
+    public static final DateTimeFormatter DATETIME_FORMATTER =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    //获取当前时间的LocalDateTime对象
-    //LocalDateTime.now();
 
-    //根据年月日构建LocalDateTime
-    //LocalDateTime.of();
+    private static final ZoneId ZONE = ZoneId.of("Asia/Shanghai");
 
-    //比较日期先后
-    //LocalDateTime.now().isBefore(),
-    //LocalDateTime.now().isAfter(),
 
+    /**
+     * 获取当前系统时间
+     * @return
+     */
+    public static LocalTime getLocalTime() {
+        return LocalTime.now();
+    }
+
+    /**
+     * 获取当前系统日期
+     * @return
+     */
+    public static LocalDate getLocalDate() {
+        return LocalDate.now();
+    }
+
+    /**
+     * 获取当前系统日期时间
+     * @return
+     */
+    public static LocalDateTime getLocalDateTime() {
+        return LocalDateTime.now();
+    }
+
+    /**
+     * 字符串转LocalTime
+     * @param time
+     * @return
+     */
+    public static LocalTime str2LocalTime(String time) {
+        return LocalTime.parse(time, TIME_FORMATTER);
+    }
+
+    /**
+     * 字符串转LocalDate
+     * @param date
+     * @return
+     */
+    public static LocalDate str2LocalDate(String date) {
+        return LocalDate.parse(date, DATE_FORMATTER);
+    }
+
+    /**
+     * 字符串转LocalDateTime
+     * @param dateTime
+     * @return
+     */
+    public static LocalDateTime str2LocalDateTime(String dateTime) {
+        return LocalDateTime.parse(dateTime, DATETIME_FORMATTER);
+    }
+
+
+
+    /**
+     * 获取指定日期 几天前 几天前 或者几天后  最小时间
+     * @param date
+     * @param days
+     * @return
+     */
+    public static LocalDateTime getMinTime(LocalDateTime date, Integer days) {
+        LocalDate localDate = getLocalDate(date, days);
+        LocalDateTime minTime = LocalDateTime.of(localDate, LocalTime.MIN);
+
+        return minTime;
+    }
+
+    /**
+     * 获取指定日期 几天前 或者几天后 最大时间
+     * @param date
+     * @param days 正数加天数 负数减天数
+     * @return
+     */
+    public static LocalDateTime getMaxTime(LocalDateTime date, Integer days) {
+        LocalDate localDate = getLocalDate(date, days);
+
+        LocalDateTime maxTime = LocalDateTime.of(localDate, LocalTime.MAX);
+        return maxTime;
+    }
+
+    private static LocalDate getLocalDate(LocalDateTime date, Integer days) {
+        LocalDate localDate = null;
+        if(days == null || days == 0) {
+            localDate = date.toLocalDate();
+        }
+        if(days > 0) {
+            localDate = date.toLocalDate().plusDays(days);
+        }
+        if(days < 0) {
+            localDate = date.toLocalDate().minusDays(Math.abs(days));
+        }
+        return localDate;
+    }
+
+    /**
+     * 获取指定日期 最小时间
+     * @param date
+     * @return
+     */
+    public static LocalDateTime getMinTime(LocalDateTime date) {
+        LocalDateTime minTime = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN);
+        return minTime;
+    }
+
+    /**
+     * 获取指定日期 最大时间
+     * @param date
+     * @return
+     */
+    public static LocalDateTime getMaxTime(LocalDateTime date) {
+        LocalDateTime maxTime = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX);
+        // maxTime.withNano(3);
+        //  maxTime.minusSeconds(1);
+        return maxTime;
+    }
+
+    /**
+     * 获取当前日期几天前最小时间
+     * @param days
+     * @return
+     */
+    public static LocalDateTime getMinTime(Integer days) {
+        return getMinTime(LocalDateTime.now(), days);
+    }
+
+    /**
+     * 获取当前日期几天前最大时间
+     * @param days
+     * @return
+     */
+    public static LocalDateTime getMaxTime(Integer days) {
+        return getMaxTime(LocalDateTime.now(), days);
+    }
+
+
+    /**
+     * 获取某个时间是否在两个时间区间之内
+     * @param startTime
+     * @param endTime
+     * @param time
+     * @return 1-是 0-否
+     */
+    public static Integer getTimeIsBetween(LocalTime startTime, LocalTime endTime, LocalTime time) {
+
+        int startHour = startTime.getHour();
+        int startMinute = startTime.getMinute();
+        int startSecond = startTime.getSecond();
+
+        int endHour = endTime.getHour();
+        int endMinute = endTime.getMinute();
+        int endSecond = endTime.getSecond();
+
+        int hour = time.getHour();
+        int minute = time.getMinute();
+        int second = time.getSecond();
+
+
+        int beginTimeSecond = startHour * 60 * 60  + startMinute * 60 + startSecond;
+        int endTimeSecond = endHour * 60 * 60  + endMinute * 60 + endSecond;
+        int timeSecond = hour * 60 * 60  + minute * 60 + second;
+
+        if(timeSecond >= beginTimeSecond && timeSecond <= endTimeSecond) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public static LocalDateTime getDateTimeOfTimestamp(long timestamp) {
+        Instant instant = Instant.ofEpochMilli(timestamp);
+        return LocalDateTime.ofInstant(instant, ZONE);
+    }
 
 
     /**
@@ -36,7 +200,7 @@ public class LocalDateTimeUtils {
      * @return
      */
     public static Date convertLDToDate(LocalDate time) {
-        return Date.from(time.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return Date.from(time.atStartOfDay(ZONE).toInstant());
     }
 
 
@@ -46,7 +210,7 @@ public class LocalDateTimeUtils {
      * @return
      */
     public static LocalDateTime convertDateToLDT(Date date) {
-        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+        return LocalDateTime.ofInstant(date.toInstant(), ZONE);
     }
 
     /**
@@ -55,7 +219,7 @@ public class LocalDateTimeUtils {
      * @return
      */
     public static Date convertLDTToDate(LocalDateTime time) {
-        return Date.from(time.atZone(ZoneId.systemDefault()).toInstant());
+        return Date.from(time.atZone(ZONE).toInstant());
     }
 
 
@@ -65,7 +229,7 @@ public class LocalDateTimeUtils {
      * @return
      */
     public static Long getMilliByTime(LocalDateTime time) {
-        return time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        return time.atZone(ZONE).toInstant().toEpochMilli();
     }
 
     /**
@@ -74,7 +238,7 @@ public class LocalDateTimeUtils {
      * @return
      */
     public static Long getSecondsByTime(LocalDateTime time) {
-        return time.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+        return time.atZone(ZONE).toInstant().getEpochSecond();
     }
 
     /**
