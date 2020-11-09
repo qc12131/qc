@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: demo-service
+
+  redis:
+    host: 39.107.90.67
+    password: Mm123456
+server:
+  port: 8081
+eureka:
+  client:
+    service-url:
+      defaultZone: http://39.107.90.67:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    #ip-address: 39.108.112.202
+    instance-id: ${spring.application.name}:${server.port}
+    healthcheck:
+      # 开启健康检查
+      enabled: true
