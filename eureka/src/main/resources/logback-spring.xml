@@ -37,6 +37,7 @@
         </encoder>
     </appender>
 
+
     <appender name="LOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文档的路径及文档名 -->
         <file>${log.path}/${log.service.name}.log</file>
