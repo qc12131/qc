@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.qccloud</groupId>
         <artifactId>framework</artifactId>
-        <version>1.0.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
     </parent>
     <groupId>com.qccloud</groupId>
     <artifactId>core</artifactId>
